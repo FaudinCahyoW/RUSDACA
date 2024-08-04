@@ -10,11 +10,10 @@ import {
   useNavigation,
 } from "@react-navigation/native";
 import { FlatGrid } from "react-native-super-grid";
-import {useRouter} from 'expo-router'
-import {Profil} from "./profil"
+
 
 const Home = () => {
-  const router = useRouter()
+  const navigation = useNavigation();
 
   const [items, setItems] = React.useState([
     {
@@ -29,6 +28,7 @@ const Home = () => {
     {
       title: "Masukkan Data",
       image: require("../../assets/entry.png"),
+      onPress: () => navigation.replace('Entry')
     },
     {
       title: "Status Rumah",
@@ -37,33 +37,37 @@ const Home = () => {
   ]);
 
   const handleImagePress = (item) => {
-    if (item.name) {
-      navigation.navigate(item.name);
+    if (item.onPress) { // Handle navigation for items with defined onPress
+      item.onPress();
+    } else {
+      // Handle potential fallback or error message (optional)
+      console.warn(`Navigation not defined for item: ${item.title}`);
     }
   };
+  
 
   return (
-      <FlatGrid
-        itemDimension={130}
-        data={items}
-        spacing={10}
-        style={styles.gridView}
-        renderItem={({ item}) => (
-          <View style={[styles.itemContainer, { backgroundColor: item.code }]}>
-            <TouchableOpacity
-              style={styles.touch}
-              onPress={()=> router.push({pathname: '/profil'})}
-            >
-              <View style={styles.imagecontainer}>
-                <Image source={item.image} style={styles.image} />
-              </View>
-              <View style={styles.itemName}>
-                <Text>{item.title}</Text>
-              </View>
-            </TouchableOpacity>
-          </View>
-        )}
-      />
+    <FlatGrid
+      itemDimension={130}
+      data={items}
+      spacing={10}
+      style={styles.gridView}
+      renderItem={({ item }) => (
+        <View style={[styles.itemContainer, { backgroundColor: item.code }]}>
+          <TouchableOpacity
+            style={styles.touch}
+            onPress={() => handleImagePress(item)}
+          >
+            <View style={styles.imagecontainer}>
+              <Image source={item.image} style={styles.image} />
+            </View>
+            <View style={styles.itemName}>
+              <Text>{item.title}</Text>
+            </View>
+          </TouchableOpacity>
+        </View>
+      )}
+    />
   );
 };
 

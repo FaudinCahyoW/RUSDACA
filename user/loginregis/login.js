@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   StyleSheet,
   Text,
@@ -7,31 +7,39 @@ import {
   TouchableOpacity,
   Image,
   Alert,
+  
 } from "react-native";
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation } from '@react-navigation/native'; 
 import axios from "axios";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { Ionicons } from '@expo/vector-icons';
 
 const LoginForm = () => {
   const navigation = useNavigation();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-
+  const [secureTextEntry, setSecureTextEntry] = useState(true);
+  
   const onSubmit = async () => {
     try {
-      const response = await axios.post("https://56f3-103-175-230-46.ngrok-free.app/auth/login", {
+      const response = await axios.post("https://9e1e-103-162-112-254.ngrok-free.app/auth/login", {
         email,
         password,
       });
-
-      // Handle successful login (e.g., store token, navigate to home screen)
-      console.log("Login successful:", response.data);
       
-      navigation.navigate("Home");
+      const {token} = response.data
+      await AsyncStorage.setItem('token', token)
+      navigation.navigate("MainContainer");
       Alert.alert("Berhasil login")
+
     } catch (error) {
       console.error("Login error:", error);
-      setError("Email atau password salah"); // Display user-friendly error message
+      setError("Email atau password salah"); 
     }
+  };
+
+  const togglePasswordVisibility = () => {
+    setSecureTextEntry(!secureTextEntry);
   };
 
   return (
@@ -44,13 +52,18 @@ const LoginForm = () => {
         placeholder="Email"
         onChangeText={(text) => setEmail(text)}
       />
-      <TextInput
-        style={styles.input}
-        placeholder="Password"
-        onChangeText={(text) => setPassword(text)}
-        secureTextEntry={true}
-      />
-      <Text style={styles.lupaText}>Lupa Password</Text>
+      
+      <View style={{ position: 'relative' }}>
+        <TextInput
+          style={styles.input}
+          placeholder="Password"
+          onChangeText={(text) => setPassword(text)}
+          secureTextEntry={secureTextEntry}
+        />
+        <TouchableOpacity style={styles.eyeIcon} onPress={togglePasswordVisibility}>
+          <Ionicons name={secureTextEntry ? 'eye-off-outline' : 'eye-outline'} size={24} color="black" />
+        </TouchableOpacity>
+      </View>
 
       <TouchableOpacity
         style={styles.button}
@@ -114,7 +127,12 @@ const styles = StyleSheet.create({
   logocontain:{
     justifyContent:"center",
     alignItems:"center"
-  }
+  },
+  eyeIcon: {
+    position: "absolute",
+    right: 10,
+    top: 12,
+  },
 });
 
 export default LoginForm;
