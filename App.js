@@ -1,12 +1,21 @@
 import React, { useState, useEffect } from "react";
 import { createStackNavigator } from "@react-navigation/stack";
 import { NavigationContainer } from "@react-navigation/native";
+<<<<<<< HEAD
 import { Button, View, Image, StyleSheet, TouchableOpacity } from "react-native";
+=======
+import { Image, StyleSheet, TouchableOpacity } from "react-native";
+>>>>>>> 8052cfa (Initial commit)
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import LoginForm from "./user/loginregis/login";
 import Register from "./user/loginregis/register";
 import MainContainer from "./navigation/MainContainer";
 import InputData from "./user/loginregis/entry";
+<<<<<<< HEAD
+=======
+import Struktur from "./user/halamanpokok/struktur";
+import StatusRumah from "./user/halamanpokok/statusRumah";
+>>>>>>> 8052cfa (Initial commit)
 
 const Stack = createStackNavigator();
 
@@ -107,6 +116,58 @@ const App = () => {
         >
           {props => <InputData {...props} />}
         </Stack.Screen>
+<<<<<<< HEAD
+=======
+        <Stack.Screen
+          name="Struktur"
+          component={Struktur}
+          options={({ navigation }) => ({
+            headerTitle: "Struktur Organisasi",
+            headerStyle: {
+              backgroundColor: '#A6CE39',
+            },
+            headerTitleAlign: 'center',
+            headerTintColor: '#fff',
+            headerTitleStyle: {
+              fontWeight: 'bold',
+              textAlign: 'center',
+            },
+            headerLeft: () => (
+              <TouchableOpacity onPress={() => navigation.navigate('MainContainer')}>
+                <Image
+                  source={require("./assets/back.png")}
+                  style={styles.headerImage}
+                />
+              </TouchableOpacity>
+            ),
+          })}
+        />
+
+        <Stack.Screen
+          name="StatusRumah"
+          component={StatusRumah}
+          options={({ navigation }) => ({
+            headerTitle: "Status Rumah",
+            headerStyle: {
+              backgroundColor: '#A6CE39',
+            },
+            headerTitleAlign: 'center',
+            headerTintColor: '#fff',
+            headerTitleStyle: {
+              fontWeight: 'bold',
+              textAlign: 'center',
+            },
+            headerLeft: () => (
+              <TouchableOpacity onPress={() => navigation.navigate('MainContainer')}>
+                <Image
+                  source={require("./assets/back.png")}
+                  style={styles.headerImage}
+                />
+              </TouchableOpacity>
+            ),
+          })}
+        />
+>>>>>>> 8052cfa (Initial commit)
       </Stack.Navigator>
     </NavigationContainer>
   );
