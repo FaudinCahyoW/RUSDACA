@@ -1,13 +1,14 @@
 import { Text, TextInput, SafeAreaView, ScrollView, Alert, StyleSheet, TouchableOpacity, View } from "react-native";
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import { useNavigation } from "@react-navigation/native";
+import { useNavigation, useRoute } from "@react-navigation/native"; // Import useRoute
 import { RadioButton } from 'react-native-paper';
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
-const InputData = () => {
+const EditData = () => {
   const navigation = useNavigation();
-  const [rand, setRand] = useState("");
+  const route = useRoute(); // Get the route object
+  const { rand } = route.params; // Get rand from route params
   const [rt, setRt] = useState("");
   const [rw, setRw] = useState("");
   const [nama, setNama] = useState("");
@@ -15,186 +16,84 @@ const InputData = () => {
   const [kamarMandi, setKamarMandi] = useState("");
   const [jenisLantai, setJenisLantai] = useState("");
   const [rngkaDinding, setRngkaDinding] = useState("");
-  const [ventilasi, setVentilasi] = useState("")
-  const [air, setAir] = useState("")
-  const [dapur, setDapur] = useState("")
-  const [cahaya, setCahaya] = useState("")
-  const [sumber, setSumber] = useState("")
+  const [ventilasi, setVentilasi] = useState("");
+  const [air, setAir] = useState("");
+  const [dapur, setDapur] = useState("");
+  const [cahaya, setCahaya] = useState("");
+  const [sumber, setSumber] = useState("");
   const [notifikasi, setNotifikasi] = useState("");
-  const [isEditing, setIsEditing] = useState(false);
-  const [dataId, setDataId] = useState(null);
+
+  // Fetch existing data when the component mounts
+  useEffect(() => {
+    const fetchData = async () => {
+      const token = await AsyncStorage.getItem('token');
+      try {
+        const response = await axios.get(`https://api.rusdaca.com/data/ambildata/${rand}`, {
+          headers: {
+            'Authorization': `Bearer ${token}`
+          }
+        });
+        const data = response.data.data; // Adjust based on your API response
+        // Populate the state with the fetched data
+        setNama(data.nama_lengkap);
+        setRt(data.rt);
+        setRw(data.rw);
+        setToilet(data.sdia_toilet);
+        setKamarMandi(data.jenis_kmrMandi);
+        setJenisLantai(data.jns_lantai);
+        setRngkaDinding(data.rngka_dinding);
+        setVentilasi(data.ventilasi);
+        setAir(data.pmbuangan_air);
+        setDapur(data.sdia_dapur);
+        setCahaya(data.pencahayaan);
+        setSumber(data.smber_air);
+      } catch (error) {
+        console.error(error);
+        Alert.alert("Terjadi kesalahan saat mengambil data.");
+      }
+    };
+
+    fetchData();
+  }, [rand]); // Depend on rand
 
   const onSubmit = async () => {
-  // Ambil token dari AsyncStorage
-  const token = await AsyncStorage.getItem('token');
-  
-  try {
-    const response = await axios.post(
-      "https://api.rusdaca.com/data/tambahdata",
-      {
-        nama_lengkap: nama,
-        rand: rand,
-        rt: rt,
-        rw: rw,
-        sdia_toilet: toilet,
-        jenis_kmrMandi: kamarMandi,
-        rngka_dinding: rngkaDinding,
-        jns_lantai: jenisLantai,
-        ventilasi: ventilasi,
-        pmbuangan_air: air,
-        sdia_dapur: dapur,
-        pencahayaan: cahaya,
-        smber_air: sumber,
-        status: notifikasi
-      },
-      {
-        headers: {
-          'Authorization': `Bearer ${token}`
+    const token = await AsyncStorage.getItem('token');
+    
+    try {
+      const response = await axios.put(
+        `https://api.rusdaca.com/data/editdata/${rand}`, // Use the rand in the URL
+        {
+          nama_lengkap: nama,
+          rt: rt,
+          rw: rw,
+          sdia_toilet: toilet,
+          jenis_kmrMandi: kamarMandi,
+          rngka_dinding: rngkaDinding,
+          jns_lantai: jenisLantai,
+          ventilasi: ventilasi,
+          pmbuangan_air: air,
+          sdia_dapur: dapur,
+          pencahayaan: cahaya,
+          smber_air: sumber,
+          status: notifikasi
+        },
+        {
+          headers: {
+            'Authorization': `Bearer ${token}`
+          }
         }
-      }
-    );
-    
-    // Notifikasi berhasil
-    const apiNotification = response.data.notifikasi || "Data berhasil disimpan";
-    Alert.alert("Data berhasil disimpan", apiNotification);
-    
-    // Navigasi setelah berhasil
-    navigation.navigate("MainContainer");
-  } catch (error) {
-    // Tangani kesalahan
-    console.error(error);
-    Alert.alert("Terjadi kesalahan. Silakan coba lagi.");
-  }
-};
+      );
+      
+      const apiNotification = response.data.notifikasi || "Data berhasil diperbarui";
+      Alert.alert("Data berhasil diperbarui", apiNotification);
+      
+      navigation.navigate("MainContainer");
+    } catch (error) {
+      console.error(error);
+      Alert.alert("Terjadi kesalahan. Silakan coba lagi.");
+    }
+  };
 
-  // const [luasRumah, setLuasRumah] = useState("");
-  // const [jmlPenghuni, setJmlPenghuni] = useState("");
-
-  // useEffect(() => {
-  //   // userData();
-  //   fetchData()
-  // }, []);
-
-  // const userData = async () => {
-  //   const token = await AsyncStorage.getItem('token');
-  //   try {
-  //     if (token) {
-  //       const res = await axios.get('https://api.rusdaca.com/auth/me', {
-  //         headers: {
-  //           'Authorization': `Bearer ${token}`
-  //         }
-  //       });
-  //       const pengguna = res.data.user;
-  //       setRt(pengguna.rt);
-  //       setRw(pengguna.rw);
-  //       setNama(pengguna.nama_lengkap);
-  //       setRand(pengguna.rand)
-
-  //       const dataResponse = await axios.get(`https://api.rusdaca.com/data/ambildata/${pengguna.rand}`, {
-  //         headers: {
-  //           'Authorization': `Bearer ${token}`
-  //         }
-  //       });
-
-  //       if (dataResponse.data.data) {
-  //         Alert.alert(
-  //           'Data Sudah Ada',
-  //           'Anda sudah memiliki data. Apakah anda ingin mengubahnya?',
-  //           [
-  //             {
-  //               text: 'Tidak',
-  //               onPress: () => navigation.navigate('MainContainer'),
-  //               style: 'cancel'
-  //             },
-  //             {
-  //               text: 'Iya',
-  //               onPress: () => {
-  //                 setIsEditing(true);
-  //                 setDataId(pengguna.rand);
-  //                 fetchData(pengguna.rand);
-  //               }
-  //             }
-  //           ],
-  //           { cancelable: false }
-  //         );
-  //       } else {
-  //         console.log('Data tidak ada');
-  //       }
-  //     }
-  //   } catch (error) {
-  //     console.error('Error fetching user data:', error);
-  //   }
-  // };
-
-  // const fetchData = async (id) => {
-  //   try {
-  //     const res = await axios.get(`https://api.rusdaca.com/data/ambildata/${id}`, {
-  //       headers: {
-  //         'Authorization': `Bearer ${await AsyncStorage.getItem('token')}`
-  //       }
-  //     });
-  //     const dataRumahSehat = res.data.data;
-  //     fillForm(dataRumahSehat);
-  //   } catch (error) {
-  //     console.error('Error fetching data:', error);
-  //     Alert.alert('Terjadi kesalahan', 'Silahkan coba lagi nanti.');
-  //   }
-  // };
-
-  // const fillForm = (data) => {
-  //   setLuasRumah(data.luas_rumah || '');
-  //   setJmlPenghuni(data.jml_penghuni || '');
-  //   setToilet(data.sdia_toilet || '');
-  //   setKamarMandi(data.jenis_kmrMandi || '');
-  //   setRngkaDinding(data.rngka_dinding || '');
-  //   setJenisLantai(data.jns_lantai || '');
-  //   setVentilasi(data.ventilasi || '')
-  //   setAir
-  //   setNotifikasi(data.status || '');
-  // };
-
-  // const onSubmit = async () => {
-  //   // const token = await AsyncStorage.getItem('token');
-
-  //   const endpoint = isEditing ?
-  //     `https://api.rusdaca.com/data/editdata/${dataId}` :
-  //     "https://api.rusdaca.com/data/tambahdata";
-  //   const method = isEditing ? 'PUT' : 'POST';
-
-  //   try {
-  //     const response = await axios({
-  //       // method,
-  //       // url: endpoint,
-  //       data: {
-  //         nama_lengkap: nama,
-  //         rand: rand,
-  //         rt: rt,
-  //         rw: rw,
-  //         sdia_toilet: toilet,
-  //         jenis_kmrMandi: kamarMandi,
-  //         rngka_dinding: rngkaDinding,
-  //         jns_lantai: jenisLantai,
-  //         ventilasi : ventilasi,
-  //         pmbuangan_air : air,
-  //         sdia_dapur: dapur,
-  //         pencahayaan: cahaya,
-  //         smber_air: sumber,
-  //         status: notifikasi
-  //         // luas_rumah: luasRumah,
-  //         // jml_penghuni: jmlPenghuni,
-  //       },
-  //       headers: {
-  //         'Authorization': `Bearer ${token}`
-  //       }
-  //     });
-  //     navigation.navigate("MainContainer");
-  //     const apiNotification = response.data.notifikasi || "Data berhasil disimpan";
-  //     Alert.alert(isEditing ? "Data berhasil diperbarui" : "Data berhasil disimpan", apiNotification);
-  //   } catch (error) {
-  //     console.error(error);
-  //     Alert.alert("Terjadi kesalahan. Silakan coba lagi.");
-  //   }
-  // };
 
   return (
     <ScrollView contentContainerStyle={styles.scrollViewContainer}>
@@ -205,7 +104,6 @@ const InputData = () => {
         placeholder="Nama Lengkap"
         value={nama}
         onChangeText={setNama}
-        
       />
       <View style={styles.rowContainer}>
         <View style={styles.inputContainer}>
@@ -348,7 +246,7 @@ const InputData = () => {
   );
 };
 
-export default InputData;
+export default EditData;
 
 const styles = StyleSheet.create({
   container: {

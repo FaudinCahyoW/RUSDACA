@@ -9,6 +9,8 @@ import MainContainer from "./navigation/MainContainer";
 import InputData from "./user/loginregis/entry";
 import Struktur from "./user/halamanpokok/struktur";
 import StatusRumah from "./user/halamanpokok/statusRumah";
+import EditData from "./user/halamanpokok/edit";
+import Profil from "./user/halamanpokok/profil";
 
 const Stack = createStackNavigator();
 
@@ -109,6 +111,33 @@ const App = () => {
         >
           {props => <InputData {...props} />}
         </Stack.Screen>
+
+        <Stack.Screen
+          name="Profil"
+          options={({ navigation }) => ({
+            headerTitle: "Profile PKK",
+            headerStyle: {
+              backgroundColor: '#A6CE39',
+            },
+            headerTitleAlign: 'center',
+            headerTintColor: '#fff',
+            headerTitleStyle: {
+              fontWeight: 'bold',
+              textAlign: 'center',
+            },
+            headerLeft: () => (
+              <TouchableOpacity onPress={() => navigation.navigate('MainContainer')}>
+                <Image
+                  source={require("./assets/back.png")}
+                  style={styles.headerImage}
+                />
+              </TouchableOpacity>
+            ),
+          })}
+        >
+          {props => <Profil {...props} />}
+        </Stack.Screen>
+        
         <Stack.Screen
           name="Struktur"
           component={Struktur}
@@ -133,7 +162,6 @@ const App = () => {
             ),
           })}
         />
-
         <Stack.Screen
           name="StatusRumah"
           component={StatusRumah}
@@ -157,6 +185,23 @@ const App = () => {
               </TouchableOpacity>
             ),
           })}
+        />
+        {/* Tambahkan halaman EditData */}
+        <Stack.Screen
+          name="EditData"
+          component={EditData}
+          options={{
+            title: 'Edit Data',
+            headerStyle: {
+              backgroundColor: '#A6CE39',
+            },
+            headerTitleAlign: 'center',
+            headerTintColor: '#fff',
+            headerTitleStyle: {
+              fontWeight: 'bold',
+              textAlign: 'center',
+            },
+          }}
         />
       </Stack.Navigator>
     </NavigationContainer>

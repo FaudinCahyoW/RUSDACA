@@ -1,7 +1,7 @@
 import * as React from "react";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import Ionicons from "react-native-vector-icons/Ionicons";
-import { Button, View, Image, StyleSheet, TouchableOpacity } from "react-native";
+import { View, Image, StyleSheet, TouchableOpacity } from "react-native";
 
 // Halaman
 import Info from "../user/halamanpokok/info";
@@ -36,7 +36,7 @@ const MainContainer = ({ navigation, handleLogout }) => {
 
           return <Ionicons name={iconName} size={size} color={color} />;
         },
-        tabBarStyle: { backgroundColor: "#A6CE39", height: 70 },
+        tabBarStyle: { backgroundColor: "#A6CE39", height: 47 },
         tabBarLabelStyle: { color: "white" },
         tabBarInactiveTintColor: "white",
         headerStyle: {

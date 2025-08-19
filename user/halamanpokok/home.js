@@ -5,6 +5,7 @@ import {
   View,
   StyleSheet,
   Image,
+  ScrollView
 } from "react-native";
 import {
   useNavigation,
@@ -19,7 +20,7 @@ const Home = () => {
     {
       title: "Profil PKK",
       image: require("../../assets/profil.png"),
-      name: "/Profil",
+      onPress: () => navigation.replace('Profil')
     },
     {
       title: "Struktur Organisasi",
@@ -53,13 +54,9 @@ const Home = () => {
       itemDimension={130}
       data={items}
       spacing={10}
-      style={styles.gridView}
+      contentContainerStyle={styles.gridView}
       renderItem={({ item }) => (
-        <View
-          style={[
-            { backgroundColor: item.code },
-          ]}
-        >
+        <View style={styles.container}>
           <TouchableOpacity
             style={styles.touch}
             onPress={() => handleImagePress(item)}
@@ -89,9 +86,10 @@ const styles = StyleSheet.create({
     backgroundColor: "white",
   },
   gridView: {
-    marginTop: 10,
     flex: 1,
+    marginTop:50
   },
+
 
   entry:{
     marginLeft:50
