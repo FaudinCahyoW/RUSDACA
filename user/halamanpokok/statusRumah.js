@@ -1,82 +1,82 @@
-import AsyncStorage from "@react-native-async-storage/async-storage";
-import axios from "axios";
 import React, { useEffect, useState } from "react";
+import axios from "axios";
+import { View, Text, StyleSheet, Alert, TouchableOpacity,  ScrollView } from "react-native";
+import { Table, Row, Rows } from 'react-native-table-component';
 import { useNavigation } from "@react-navigation/native";
-import { Image, Text, View, StyleSheet } from "react-native";
 
 const StatusRumah = () => {
     const navigation = useNavigation();
-    const [rumah, setRumah] = useState("")
+    const [rumahData, setRumahData] = useState([]);  // Menyimpan data array rumah
+    const [tableHead] = useState(['Nama Lengkap', 'Status Rumah', 'Action']); // Header tabel
 
     useEffect(() => {
-        statusData()
-    }, [])
+        statusData();
+    }, []);
 
     const statusData = async () => {
-        const token = await AsyncStorage.getItem('token')
         try {
-            if (token) {
-                const res = await axios.get('http://api.rusdaca.com/auth/me', {
-                    headers: {
-                        'Authorization': `Bearer ${token}`
-                    }
-                })
-                const pengguna = res.data.user;
-
-                try {
-                    const dataResponse = await axios.get(`http://api.rusdaca.com/data/ambildata/${pengguna.nik}`,
-                        {
-                            headers: {
-                                'Authorization': `Bearer ${token}`
-                            }
-                        }
-                    )
-                    const dataRumah = dataResponse.data.data;
-                    setRumah(dataRumah.status)
-
-                } catch (error) {
-                    console.error(error)
-                }
-            }
-
-        } catch (dataError) {
-            if (dataError.response?.status === 401) {
-                console.error('Unauthorized: Token invalid atau expired.');
-                Alert.alert('Token tidak valid atau kadaluarsa', 'Silahkan login kembali.');
-                navigation.replace('Login');
-            } else {
-                console.error('Error fetching user data:', error);
-                Alert.alert('Terjadi kesalahan', 'Silahkan coba lagi nanti.');
-            }
+            const dataResponse = await axios.get(`https://api.rusdaca.com/data/ambildata`);
+            const dataRumah = dataResponse.data.data;
+            setRumahData(dataRumah);  // Menyimpan seluruh data
+        } catch (error) {
+            console.error(error);
+            Alert.alert('Error', 'Failed to fetch data');
         }
     }
+
+    // Mengonversi data rumah menjadi format untuk Rows
+    const tableData = rumahData.map(item => [
+        item.nama_lengkap, 
+        item.status,
+        <TouchableOpacity 
+            style={styles.button} 
+            onPress={() => navigation.navigate('EditData', { rand: item.rand })} // Navigasi ke halaman EditData
+        >
+            <Text style={styles.buttonText}>Edit</Text>
+        </TouchableOpacity>
+    ]);
+
     return (
-        <View style={styles.containerRumah}>
-                <Image style={styles.image} source={require("../../assets/status.png")}/>
-            <View style={styles.styleRumah}>
-                <Text style={styles.textRumah}>{rumah}</Text>
-            </View>
-        </View>
-    )
-}
+        <ScrollView style={styles.containerRumah}>
+            <Table borderStyle={{ borderWidth: 1, borderColor: '#C1C0B9' }}>
+                <Row data={tableHead} style={styles.header} textStyle={styles.headerText} />
+                <Rows data={tableData} textStyle={styles.text} />
+            </Table>
+        </ScrollView>
+    );
+};
+
+export default StatusRumah;
+
 const styles = StyleSheet.create({
     containerRumah: {
-        display: "flex",
-        justifyContent: "center",
-        alignItems:"center",
-        height:"100%", 
+        flexGrow: 1,
+        backgroundColor: '#fff'
     },
-    styleRumah:{
-        textAlign:"center",
-        marginTop:20,
+    header: {
+        height: 50,
+        backgroundColor: '#f1f1f1'
     },
-    image:{
-        height:100,
-        width:100
+    headerText: {
+        textAlign: 'center',
+        fontWeight: 'bold',
     },
-    textRumah:{
-        fontSize:25
-    }
-})
+    text: {
+        margin: 6,
+        textAlign: 'center',
+    },
+    button: {
+        backgroundColor: '#007BFF',
+        padding: 10,
+        borderRadius: 5,
+        width: 70,
+        margin: 20,
 
-export default StatusRumah
+
+    },
+    buttonText: {
+        color: '#fff',
+        fontWeight: 'bold',
+        textAlign:"center"
+    },
+});

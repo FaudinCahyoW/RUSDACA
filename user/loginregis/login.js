@@ -162,7 +162,7 @@ const LoginForm = () => {
   
   const onSubmit = async () => {
     try {
-      const response = await axios.post("http://api.rusdaca.com/auth/login", {
+      const response = await axios.post("https://api.rusdaca.com/auth/login", {
         email,
         password,
       });

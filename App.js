@@ -15,7 +15,12 @@ import InputData from "./user/loginregis/entry";
 =======
 import Struktur from "./user/halamanpokok/struktur";
 import StatusRumah from "./user/halamanpokok/statusRumah";
+<<<<<<< HEAD
 >>>>>>> 8052cfa (Initial commit)
+=======
+import EditData from "./user/halamanpokok/edit";
+import Profil from "./user/halamanpokok/profil";
+>>>>>>> a231bc7 (update project expo web build script)
 
 const Stack = createStackNavigator();
 
@@ -117,7 +122,37 @@ const App = () => {
           {props => <InputData {...props} />}
         </Stack.Screen>
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
+=======
+
+        <Stack.Screen
+          name="Profil"
+          options={({ navigation }) => ({
+            headerTitle: "Profile PKK",
+            headerStyle: {
+              backgroundColor: '#A6CE39',
+            },
+            headerTitleAlign: 'center',
+            headerTintColor: '#fff',
+            headerTitleStyle: {
+              fontWeight: 'bold',
+              textAlign: 'center',
+            },
+            headerLeft: () => (
+              <TouchableOpacity onPress={() => navigation.navigate('MainContainer')}>
+                <Image
+                  source={require("./assets/back.png")}
+                  style={styles.headerImage}
+                />
+              </TouchableOpacity>
+            ),
+          })}
+        >
+          {props => <Profil {...props} />}
+        </Stack.Screen>
+        
+>>>>>>> a231bc7 (update project expo web build script)
         <Stack.Screen
           name="Struktur"
           component={Struktur}
@@ -142,7 +177,6 @@ const App = () => {
             ),
           })}
         />
-
         <Stack.Screen
           name="StatusRumah"
           component={StatusRumah}
@@ -167,7 +201,27 @@ const App = () => {
             ),
           })}
         />
+<<<<<<< HEAD
 >>>>>>> 8052cfa (Initial commit)
+=======
+        {/* Tambahkan halaman EditData */}
+        <Stack.Screen
+          name="EditData"
+          component={EditData}
+          options={{
+            title: 'Edit Data',
+            headerStyle: {
+              backgroundColor: '#A6CE39',
+            },
+            headerTitleAlign: 'center',
+            headerTintColor: '#fff',
+            headerTitleStyle: {
+              fontWeight: 'bold',
+              textAlign: 'center',
+            },
+          }}
+        />
+>>>>>>> a231bc7 (update project expo web build script)
       </Stack.Navigator>
     </NavigationContainer>
   );

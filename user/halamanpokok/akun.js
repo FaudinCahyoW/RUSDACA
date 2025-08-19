@@ -128,7 +128,7 @@ import axios from "axios";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const Akun = () => {
-  const [noKK, setNoKK] = useState("");
+  // const [noKK, setNoKK] = useState("");
   const [rt, setRt] = useState("")
   const [rw, setRw] = useState("")
   const [nama, setNama] = useState("");
@@ -144,7 +144,7 @@ const Akun = () => {
     try{
       if(token){
 
-        const res = await axios.get('http://api.rusdaca.com/auth/me', {
+        const res = await axios.get('https://api.rusdaca.com/auth/me', {
           headers: { 
             'Authorization': `Bearer ${token}`
           },        
@@ -152,7 +152,7 @@ const Akun = () => {
           const pengguna = res.data.user
           setRt(pengguna.rt)
           setRw(pengguna.rw)
-          setNoKK(pengguna.nik)
+          // setNoKK(pengguna.nik)
           setNama(pengguna.nama_lengkap)
           setEmail(pengguna.email)
           setAlamat(pengguna.alamat_rumah)
@@ -181,10 +181,10 @@ const Akun = () => {
       </View>
 
       <View style={styles.detailsContainer}>
-        <View style={styles.detailItem}>
+        {/* <View style={styles.detailItem}>
           <Text style={styles.title}>NIK</Text>
           <Text style={styles.detailValue}>{noKK}</Text>
-        </View>
+        </View> */}
 
         <View style={styles.detailItem}>
           <Text style={styles.title}>Email</Text>

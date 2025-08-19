@@ -4,8 +4,9 @@
     "slug": "RUSDACA",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/Logo.png",  
+    "icon": "./assets/Logo.png",
     "userInterfaceStyle": "light",
+    "jsEngine": "hermes",
     "splash": {
       "image": "./assets/Logo.png",
       "resizeMode": "contain",
@@ -14,27 +15,27 @@
     "assetBundlePatterns": [
       "**/*"
     ],
+    "ios": {
+      "supportsTablet": true
+    },
     "android": {
       "permissions": [
         "INTERNET",
         "ACCESS_NETWORK_STATE"
       ],
       "adaptiveIcon": {
-        "foregroundImage": "./assets/Logo.png",  
+        "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
       "package": "com.faudin.RUSDACA"
     },
     "web": {
       "favicon": "./assets/favicon.png"
-<<<<<<< HEAD
-=======
     },
     "extra": {
       "eas": {
         "projectId": "a30eeef4-c69c-4b79-a8cd-a9dc28d5f6cd"
       }
->>>>>>> 8052cfa (Initial commit)
     }
   }
 }
