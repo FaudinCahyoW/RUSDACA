@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 import * as React from "react";
 import {
   Text,
@@ -6,12 +5,11 @@ import {
   View,
   StyleSheet,
   Image,
+  Dimensions,
 } from "react-native";
-import {
-  useNavigation,
-} from "@react-navigation/native";
+import { useNavigation } from "@react-navigation/native";
 import { FlatGrid } from "react-native-super-grid";
-
+const { width } = Dimensions.get("window");
 
 const Home = () => {
   const navigation = useNavigation();
@@ -20,219 +18,131 @@ const Home = () => {
     {
       title: "Profil PKK",
       image: require("../../assets/profil.png"),
-      name: "/Profil",
+      onPress: () => navigation.navigate("Profil"),
     },
     {
       title: "Struktur Organisasi",
       image: require("../../assets/struktur.png"),
+      onPress: () => navigation.navigate("Struktur"),
     },
     {
       title: "Masukkan Data",
       image: require("../../assets/entry.png"),
-      onPress: () => navigation.replace('Entry')
+      onPress: () => navigation.replace("Entry"),
     },
     {
       title: "Status Rumah",
       image: require("../../assets/status.png"),
+      onPress: () => navigation.navigate("StatusRumah"),
     },
   ]);
 
   const handleImagePress = (item) => {
-    if (item.onPress) { // Handle navigation for items with defined onPress
+    if (item.onPress) {
+      // Handle navigation for items with defined onPress
       item.onPress();
     } else {
       // Handle potential fallback or error message (optional)
       console.warn(`Navigation not defined for item: ${item.title}`);
     }
   };
-  
 
   return (
-    <FlatGrid
-      itemDimension={130}
-      data={items}
-      spacing={10}
-      style={styles.gridView}
-      renderItem={({ item }) => (
-        <View style={[styles.itemContainer, { backgroundColor: item.code }]}>
-          <TouchableOpacity
-            style={styles.touch}
-            onPress={() => handleImagePress(item)}
-          >
-            <View style={styles.imagecontainer}>
-              <Image source={item.image} style={styles.image} />
-            </View>
-            <View style={styles.itemName}>
-              <Text>{item.title}</Text>
-            </View>
-          </TouchableOpacity>
-        </View>
-      )}
-    />
+    <View style={styles.container}>
+      <View style={styles.header}>
+        <Image source = {require("../../assets/Logo.png")} 
+          style={styles.logo}
+        />
+        <Text style={styles.welcome}> Selamat Datang di Aplikasi RUSDACA</Text>
+      </View>
+      <FlatGrid
+        itemDimension={150}
+        data={items}
+        spacing={10}
+        style={styles.gridView}
+        contentContainerStyle={{
+          flexGrow: 1,
+          justifyContent:"space-evenly"
+        }}
+        renderItem={({ item }) => (
+          <View style={[styles.itemContainer, { backgroundColor: item.code }]}>
+            <TouchableOpacity
+              style={styles.touch}
+              onPress={() => handleImagePress(item)}
+            >
+              <View style={styles.imagecontainer}>
+                <Image source={item.image} style={styles.image} />
+              </View>
+              <View style={styles.itemName}>
+                <Text>{item.title}</Text>
+              </View>
+            </TouchableOpacity>
+          </View>
+        )}
+      />
+    </View>
   );
 };
 
 const styles = StyleSheet.create({
-  touch: {
-    justifyContent: "flex-end",
-    borderRadius: 5,
-    padding: 0.5,
-    height: 120,
-    width: 130,
-    alignSelf: "center",
-    marginBottom: 100,
-    backgroundColor: "white",
-  },
-  gridView: {
-    marginTop: 10,
+  container: {
     flex: 1,
   },
+  gridView: {
+    flex: 1,
+    marginTop: 10,
+  },
+  touch: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    borderRadius: 8,
+    padding: 10,
+    backgroundColor: "white",
 
+    // shadow
+    elevation: 4,
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.2,
+    shadowRadius: 3,
+  },
   itemName: {
-    fontSize: 16,
+    fontSize: 14,
     color: "black",
     fontWeight: "600",
     paddingTop: 7,
-    alignSelf: "center",
+    textAlign: "center",
   },
   image: {
-    justifyContent: "center",
-    alignSelf: "center",
     width: 50,
     height: 50,
+    resizeMode: "contain",
   },
   imagecontainer: {
     justifyContent: "center",
-    alignSelf: "center",
+    alignItems: "center",
     width: 80,
     height: 80,
     backgroundColor: "#1FC4F4",
     borderRadius: 8,
   },
-});
-
-export default Home;
-=======
-import * as React from "react";
-import {
-  Text,
-  TouchableOpacity,
-  View,
-  StyleSheet,
-  Image,
-  ScrollView
-} from "react-native";
-import {
-  useNavigation,
-} from "@react-navigation/native";
-import { FlatGrid } from "react-native-super-grid";
-
-
-const Home = () => {
-  const navigation = useNavigation();
-
-  const [items, setItems] = React.useState([
-    {
-      title: "Profil PKK",
-      image: require("../../assets/profil.png"),
-      onPress: () => navigation.replace('Profil')
-    },
-    {
-      title: "Struktur Organisasi",
-      image: require("../../assets/struktur.png"),
-      onPress: () => navigation.replace('Struktur')
-    },
-    {
-      title: "Masukkan Data",
-      image: require("../../assets/entry.png"),
-      onPress: () => navigation.replace('Entry'),
-      style:styles.entry
-    },
-    {
-      title: "Status Rumah",
-      image: require("../../assets/status.png"),
-      onPress: () => navigation.replace('StatusRumah')
-
-    },
-  ]);
-
-  const handleImagePress = (item) => {
-    if (item.onPress) {
-      item.onPress();
-    } else {
-      console.warn(`Navigation not defined for item: ${item.title}`);
-    }
-  };
-
-  return (
-    <FlatGrid
-      itemDimension={130}
-      data={items}
-      spacing={10}
-      contentContainerStyle={styles.gridView}
-      renderItem={({ item }) => (
-        <View style={styles.container}>
-          <TouchableOpacity
-            style={styles.touch}
-            onPress={() => handleImagePress(item)}
-          >
-            <View style={styles.imageContainer}>
-              <Image source={item.image} style={styles.image} />
-            </View>
-            <View style={styles.itemName}>
-              <Text>{item.title}</Text>
-            </View>
-          </TouchableOpacity>
-        </View>
-      )}
-    />
-  );
-};
-
-const styles = StyleSheet.create({
-  touch: {
-    justifyContent: "flex-end",
-    borderRadius: 5,
-    padding: 0.5,
-    height: 120,
-    width: 130,
-    alignSelf: "center",
-    marginBottom: 100,
-    backgroundColor: "white",
+  header: {
+    alignItems: "center",
+    paddingVertical: 15,
   },
-  gridView: {
-    flex: 1,
-    marginTop:50
+  logo: {
+    width: 150,
+    height: 150,
+    marginBottom: 5,
+    resizeMode: "contain",
   },
-
-
-  entry:{
-    marginLeft:50
-  },  
-
-  itemName: {
-    fontSize: 16,
-    color: "black",
-    fontWeight: "600",
-    paddingTop: 7,
-    alignSelf: "center",
-  },
-  image: {
-    justifyContent: "center",
-    alignSelf: "center",
-    width: 50,
-    height: 50,
-  },
-  imageContainer: {
-    display:"flex",
-    justifyContent: "center",
-    alignSelf: "center",
-    width: 80,
-    height: 80,
-    backgroundColor: "#1FC4F4",
-    borderRadius: 8,
+  welcome: {
+    fontSize: 14,
+    fontWeight: "500",
+    color: "#333",
   },
 });
 
+
 export default Home;
->>>>>>> 8052cfa (Initial commit)

@@ -15,7 +15,7 @@ const StatusRumah = () => {
 
     const statusData = async () => {
         try {
-            const dataResponse = await axios.get(`https://api.rusdaca.com/data/ambildata`);
+            const dataResponse = await axios.get(`https://eb0c3df2296c.ngrok-free.app/data/ambildata`);
             const dataRumah = dataResponse.data.data;
             setRumahData(dataRumah);  // Menyimpan seluruh data
         } catch (error) {

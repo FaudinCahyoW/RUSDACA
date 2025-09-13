@@ -28,7 +28,7 @@ const EditData = () => {
     const fetchData = async () => {
       const token = await AsyncStorage.getItem('token');
       try {
-        const response = await axios.get(`https://api.rusdaca.com/data/ambildata/${rand}`, {
+        const response = await axios.get(`https://eb0c3df2296c.ngrok-free.app/data/ambildata/${rand}`, {
           headers: {
             'Authorization': `Bearer ${token}`
           }
@@ -61,7 +61,7 @@ const EditData = () => {
     
     try {
       const response = await axios.put(
-        `https://api.rusdaca.com/data/editdata/${rand}`, // Use the rand in the URL
+        `https://eb0c3df2296c.ngrok-free.app/data/editdata/${rand}`, // Use the rand in the URL
         {
           nama_lengkap: nama,
           rt: rt,

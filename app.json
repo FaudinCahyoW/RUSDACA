@@ -27,14 +27,6 @@
     },
     "web": {
       "favicon": "./assets/favicon.png"
-<<<<<<< HEAD
-=======
-    },
-    "extra": {
-      "eas": {
-        "projectId": "a30eeef4-c69c-4b79-a8cd-a9dc28d5f6cd"
-      }
->>>>>>> 8052cfa (Initial commit)
     }
   }
 }

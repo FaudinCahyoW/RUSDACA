@@ -1,26 +1,18 @@
 import React, { useState, useEffect } from "react";
 import { createStackNavigator } from "@react-navigation/stack";
 import { NavigationContainer } from "@react-navigation/native";
-<<<<<<< HEAD
 import { Button, View, Image, StyleSheet, TouchableOpacity } from "react-native";
-=======
-import { Image, StyleSheet, TouchableOpacity } from "react-native";
->>>>>>> 8052cfa (Initial commit)
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import LoginForm from "./user/loginregis/login";
 import Register from "./user/loginregis/register";
 import MainContainer from "./navigation/MainContainer";
 import InputData from "./user/loginregis/entry";
-<<<<<<< HEAD
-=======
+
 import Struktur from "./user/halamanpokok/struktur";
 import StatusRumah from "./user/halamanpokok/statusRumah";
-<<<<<<< HEAD
->>>>>>> 8052cfa (Initial commit)
-=======
+
 import EditData from "./user/halamanpokok/edit";
 import Profil from "./user/halamanpokok/profil";
->>>>>>> a231bc7 (update project expo web build script)
 
 const Stack = createStackNavigator();
 
@@ -121,10 +113,6 @@ const App = () => {
         >
           {props => <InputData {...props} />}
         </Stack.Screen>
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
-=======
 
         <Stack.Screen
           name="Profil"
@@ -152,7 +140,6 @@ const App = () => {
           {props => <Profil {...props} />}
         </Stack.Screen>
         
->>>>>>> a231bc7 (update project expo web build script)
         <Stack.Screen
           name="Struktur"
           component={Struktur}
@@ -201,9 +188,6 @@ const App = () => {
             ),
           })}
         />
-<<<<<<< HEAD
->>>>>>> 8052cfa (Initial commit)
-=======
         {/* Tambahkan halaman EditData */}
         <Stack.Screen
           name="EditData"
@@ -221,7 +205,6 @@ const App = () => {
             },
           }}
         />
->>>>>>> a231bc7 (update project expo web build script)
       </Stack.Navigator>
     </NavigationContainer>
   );
